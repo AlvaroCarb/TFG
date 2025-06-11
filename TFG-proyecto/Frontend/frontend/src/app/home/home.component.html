@@ -1,0 +1,95 @@
+<!-- 🎯 BANNER ORIGINAL -->
+<section class="banner">
+  <h1><i class="fas fa-star"></i> Encuentra tu próximo favorito</h1>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Buscar por nombre..."
+      [(ngModel)]="searchQuery"
+    />
+    <button (click)="buscar()"><i class="fas fa-search"></i> Buscar</button>
+  </div>
+
+  <!-- 🔽 NUEVA BARRA DE FILTROS -->
+  <div class="filtros-bar">
+
+    <!-- 🔁 Tipo de cocina -->
+    <select [(ngModel)]="filtros.tipoCocina" (change)="buscar()">
+      <option value="">Tipo de cocina</option>
+      <option *ngFor="let t of tiposCocina" [value]="t">{{ t }}</option>
+    </select>
+
+    <!-- 🔁 Barrio -->
+    <select [(ngModel)]="filtros.barrio" (change)="buscar()">
+      <option value="">Barrio</option>
+      <option *ngFor="let b of barrios" [value]="b">{{ b }}</option>
+    </select>
+
+    <!-- 🔁 Rango de precio -->
+    <select [(ngModel)]="filtros.rangoPrecio" (change)="buscar()">
+      <option value="">Rango de precio</option>
+      <option *ngFor="let r of rangosPrecio" [value]="r">{{ r }}</option>
+    </select>
+
+    <!-- 🔽 Dropdown de restricciones dietéticas -->
+    <div class="dropdown-wrapper">
+      <button class="dropdown-toggle" (click)="toggleRestricciones()">
+         Restricciones Dietéticas
+        <span [class.open]="restriccionesAbierto">▼</span>
+      </button>
+
+      <div class="dropdown-panel" *ngIf="restriccionesAbierto">
+        <div class="dropdown-checkbox" *ngFor="let restriccion of restricciones">
+          <label>
+            <input
+              type="checkbox"
+              [value]="restriccion"
+              [checked]="filtros.restricciones.includes(restriccion)"
+              (change)="onCheckboxChange($event)"
+            />
+            {{ restriccion }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⭐ DESTACADOS -->
+<div *ngIf="!busquedaRealizada" class="resultados-container">
+  <h2><i class="fas fa-fire"></i> Destacados de la semana</h2>
+
+  <div *ngFor="let destacado of destacados" class="restaurante-card">
+    <h3><i class="fas fa-store-alt"></i> {{ destacado.nombre }}</h3>
+    <p>{{ destacado.descripcion }}</p>
+  </div>
+</div>
+
+<!-- 📋 RESULTADOS -->
+<div *ngIf="restaurantes.length > 0" class="resultados-container">
+  <h2><i class="fas fa-utensils"></i> Restaurantes encontrados</h2>
+
+  <div
+    *ngFor="let restaurante of restaurantes"
+    class="restaurante-card clickable"
+    (click)="verPerfil(restaurante.id!)"
+  >
+    <h3><i class="fas fa-store"></i> {{ restaurante.nombre }}</h3>
+    <p><i class="fas fa-info-circle"></i> {{ restaurante.descripcion || 'Sin descripción disponible' }}</p>
+    <p><i class="fas fa-map-marker-alt"></i> <strong>Dirección:</strong> {{ restaurante.direccion }}</p>
+    <p><i class="fas fa-phone"></i> <strong>Teléfono:</strong> {{ restaurante.telefono }}</p>
+
+    <div class="etiquetas">
+      <span class="etiqueta"><i class="fas fa-utensils"></i> {{ restaurante.tipoCocina }}</span>
+      <span class="etiqueta"><i class="fas fa-city"></i> {{ restaurante.barrio }}</span>
+      <span class="etiqueta"><i class="fas fa-euro-sign"></i> {{ restaurante.rangoPrecio }}</span>
+      <span
+        *ngFor="let restriccion of restaurante.restriccionesDieteticas"
+        class="etiqueta"
+      >
+        <i class="fas fa-leaf"></i> {{ restriccion }}
+      </span>
+    </div>
+  </div>
+</div>

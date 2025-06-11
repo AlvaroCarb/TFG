@@ -1,0 +1,49 @@
+<form [formGroup]="resenyaForm" (ngSubmit)="enviarResena()">
+  <div class="estrella-container">
+  <span *ngFor="let estrella of estrellas"
+        class="estrella"
+        [class.activa]="estrella <= (puntuacionHover || puntuacionSeleccionada)"
+        (click)="!yaTieneResena && seleccionarPuntuacion(estrella)"
+        (mouseover)="!yaTieneResena && destacarPuntuacion(estrella)"
+        (mouseleave)="!yaTieneResena && resetearHover()">
+    ★
+  </span>
+</div>
+
+
+  <div *ngIf="yaTieneResena" class="info">
+    La puntuación ya no se puede modificar.
+  </div>
+
+  <textarea formControlName="comentario"
+            placeholder="Escriba aquí su opinión..."
+            rows="4"
+            (input)="validarComentario()"></textarea>
+
+  <div *ngIf="!comentarioValido" class="error">
+    ❌ El comentario contiene palabras inapropiadas
+  </div>
+
+  <input type="file" accept="image/*" multiple (change)="handleFileInput($event)" />
+
+  <div class="vista-previa" *ngIf="vistaPrevia.length > 0">
+    <img *ngFor="let img of vistaPrevia" [src]="img" class="preview-img" />
+  </div>
+
+  <div class="botones" *ngIf="!cargandoEstadoResena">
+    <button *ngIf="!yaTieneResena"
+            type="submit"
+            [disabled]="resenyaForm.invalid || puntuacionSeleccionada === 0 || !comentarioValido">
+      Enviar Reseña
+    </button>
+    <button *ngIf="yaTieneResena"
+            type="button"
+            (click)="actualizarResena()"
+            [disabled]="resenyaForm.invalid || !comentarioValido">
+      Modificar Reseña
+    </button>
+  </div>
+
+  <p *ngIf="mostrarExito" class="exito">✅ Reseña registrada correctamente</p>
+  <div *ngIf="mostrarError" class="error">{{ mensajeError }}</div>
+</form>

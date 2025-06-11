@@ -1,0 +1,206 @@
+.perfil-restaurante {
+  max-width: 860px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: #fefefe;
+  border-radius: 14px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.nombre-restaurante {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.descripcion-restaurante {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.info-contacto {
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.info-contacto i {
+  margin-right: 6px;
+  color: #555;
+}
+
+.etiquetas {
+  margin: 16px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.etiqueta {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Carrusel */
+.carrusel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 30px auto;
+  max-width: 100%;
+}
+
+.carrusel-imagen {
+  width: 320px;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-carrusel {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.nav-btn {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nav-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Menú */
+.menu-restaurante {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px dashed #ddd;
+}
+
+.boton-descargar {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.boton-descargar:hover {
+  background-color: #218838;
+}
+
+/* Botón añadir reseña */
+.btn-resena {
+  background-color: #ff9800;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.btn-resena:hover {
+  background-color: #f57c00;
+}
+
+/* Aviso login */
+.aviso-login {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  background-color: #fff8e1;
+  border-left: 4px solid #ffc107;
+  padding: 10px;
+  border-radius: 6px;
+  color: #8d6e63;
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+.modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 28px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  z-index: 1000;
+}
+.cerrar-modal {
+  position: absolute;
+  top: 10px; right: 14px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Reseñas */
+.resenas {
+  margin-top: 40px;
+}
+.resena-card {
+  padding: 14px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+.estrellas {
+  font-size: 18px;
+  color: #ccc;
+}
+.estrellas .activa {
+  color: gold;
+}
+.imagenes-resena {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.img-resena {
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}

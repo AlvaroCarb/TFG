@@ -1,0 +1,121 @@
+<div *ngIf="restaurante" class="perfil-restaurante">
+  <h2 class="nombre-restaurante"><i class="fas fa-store"></i> {{ restaurante.nombre }}</h2>
+
+  <p class="descripcion-restaurante">
+    <i class="fas fa-info-circle"></i>
+    {{ restaurante.descripcion || 'Sin descripción disponible' }}
+  </p>
+
+  <div class="info-contacto">
+    <p><i class="fas fa-map-marker-alt"></i> {{ restaurante.direccion }}</p>
+    <p><i class="fas fa-phone-alt"></i> {{ restaurante.telefono }}</p>
+  </div>
+
+  <div class="etiquetas">
+    <span class="etiqueta"><i class="fas fa-utensils"></i> {{ restaurante.tipoCocina }}</span>
+    <span class="etiqueta"><i class="fas fa-city"></i> {{ restaurante.barrio }}</span>
+    <span class="etiqueta"><i class="fas fa-euro-sign"></i> {{ restaurante.rangoPrecio }}</span>
+    <span *ngFor="let restriccion of restaurante.restriccionesDieteticas" class="etiqueta">
+      <i class="fas fa-leaf"></i> {{ restriccion }}
+    </span>
+  </div>
+
+  <div *ngIf="restaurante.imagenes?.length" class="carrusel">
+    <button class="nav-btn" (click)="anteriorImagen()">‹</button>
+    <div class="carrusel-imagen">
+      <img
+        *ngIf="restaurante.imagenes?.length"
+        [src]="'https://localhost:8443/uploads/restaurantes/' + restaurante.id + '/' + restaurante.imagenes[imagenActual]"
+        alt="Imagen del restaurante"
+        class="img-carrusel fade-in"
+      />
+    </div>
+    <button class="nav-btn" (click)="siguienteImagen()">›</button>
+  </div>
+
+  <div *ngIf="restaurante.rutaMenu" class="menu-restaurante">
+    <h3><i class="fas fa-clipboard-list"></i> Menú del restaurante</h3>
+    <a
+      [href]="'https://localhost:8443/restaurantes/menus/' + obtenerNombreArchivo(restaurante.rutaMenu)"
+      target="_blank"
+      class="boton-descargar"
+      download>
+      <i class="fas fa-download"></i> Descargar menú
+    </a>
+  </div>
+
+  <!-- ✅ Botón Añadir/Modificar Reseña -->
+  <ng-container *ngIf="mostrarFormularioResena; else mensajeLogin">
+    <button class="btn-resena" (click)="abrirModalResena()">
+      <i class="fas fa-pen"></i>
+      {{ yaTieneResena ? 'Modificar reseña' : 'Añadir reseña' }}
+    </button>
+  </ng-container>
+
+  <ng-template #mensajeLogin>
+    <p class="aviso-login">
+      <i class="fas fa-lock"></i> Debes iniciar sesión para dejar una reseña.
+    </p>
+  </ng-template>
+
+  <!-- 💬 Modal -->
+  <div class="modal-backdrop" *ngIf="modalAbierto" (click)="cerrarModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <app-resenya
+        [restauranteNombre]="restaurante.nombre"
+        [restauranteId]="restaurante.id"
+        (resenaEnviada)="recargarResenas(); cerrarModal()"
+      ></app-resenya>
+      <button class="cerrar-modal" (click)="cerrarModal()">✖</button>
+    </div>
+  </div>
+
+  <!-- 🌟 Reseñas -->
+  <div class="resenas">
+    <h3><i class="fas fa-comments"></i> Reseñas</h3>
+    <div *ngIf="resenas.length === 0" class="sin-reseñas">No hay reseñas aún.</div>
+
+    <div *ngFor="let resena of resenas" class="resena-card">
+      <div class="estrellas">
+        <ng-container *ngFor="let i of [1,2,3,4,5]">
+          <span [class.activa]="i <= resena.valoracion">★</span>
+        </ng-container>
+      </div>
+
+      <p *ngIf="resena.contenido"><em>{{ resena.contenido }}</em></p>
+
+      <!-- 🧹 Botón eliminar contenido -->
+      <button
+        *ngIf="resena.contenido && esAutorDeResena(resena.autorEmail)"
+        class="btn btn-sm btn-outline-danger"
+        (click)="borrarContenidoResena(resena.id)">
+        🗑️ Borrar comentario
+      </button>
+
+      <!-- 🖼️ Imágenes -->
+      <div *ngIf="resena.imagenes?.length > 0" class="imagenes-resena">
+        <div class="img-wrapper" *ngFor="let img of resena.imagenes">
+          <img
+            [src]="'/api/imagenes/' + img.id"
+            [alt]="img.nombreArchivo"
+            class="img-resena"
+          />
+          <button
+            *ngIf="img?.id && esAutorDeResena(resena.autorEmail)"
+            class="btn-sm btn-danger btn-borrar-img"
+            (click)="borrarImagenResena(img.id)"
+            title="Eliminar imagen">
+            🗑️
+          </button>
+        </div>
+      </div>
+
+      <!-- 🧨 Acciones -->
+      <div class="acciones-resena" *ngIf="esAutorDeResena(resena.autorEmail)">
+        <button class="btn btn-danger" (click)="borrarResena(resena.id)">
+          🗑️ Eliminar reseña
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
